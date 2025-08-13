@@ -1,5 +1,8 @@
-public class Main_2 {
+public class Print_function {
     public static void main(String [] args){
-        System.out.print("Hello World");
+        int a = 1;
+        int b =2;
+        String c = "Sum";
+        System.out.printf("%d" , 5);
     }
 }
