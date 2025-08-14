@@ -1,4 +1,4 @@
-package ObjectOrientedProgramming.Encapsulation;
+package com.engineeringdigest.corejava.ObjectOrientedProgramming.Encapsulation;
 
 public class Car {
     private String color;
