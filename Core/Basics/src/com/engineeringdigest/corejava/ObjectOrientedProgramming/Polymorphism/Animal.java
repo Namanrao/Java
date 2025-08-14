@@ -1,4 +1,4 @@
-package ObjectOrientedProgramming.Polymorphism;
+package com.engineeringdigest.corejava.ObjectOrientedProgramming.Polymorphism;
 
 public class Animal {
 

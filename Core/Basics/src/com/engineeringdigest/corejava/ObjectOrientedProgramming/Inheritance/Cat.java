@@ -1,4 +1,4 @@
-package ObjectOrientedProgramming.Inheritance;
+package com.engineeringdigest.corejava.ObjectOrientedProgramming.Inheritance;
 
 
 //In the example below the cat class has inherited all the properties of Animal class as its child class. while also having its own unique properties.

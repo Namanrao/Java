@@ -1,4 +1,4 @@
-package ObjectOrientedProgramming.Test;
+package com.engineeringdigest.corejava.ObjectOrientedProgramming.Test;
 
 public class Cat {
     private String name;

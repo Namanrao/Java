@@ -1,12 +1,10 @@
-package datatypes;
-
-import com.sun.security.jgss.GSSUtil;
+package com.engineeringdigest.corejava.datatypes;
 
 public class Test {
 
-    public static void main(String [] args){
+    public static void main(String[] args) {
         String name1 = "Akshit Sharma";
-        int length= name1.length();
+        int length = name1.length();
 
 
 //    How to check the equality of the string .
@@ -45,12 +43,12 @@ public class Test {
         System.out.println(s);
         */
 
-        String formattedStr = String.format("My name is %s and I am %d years old.", "John",25);
+        String formattedStr = String.format("My name is %s and I am %d years old.", "John", 25);
         System.out.println(formattedStr);
 
         String name = "Amar Panchal";
-        System.out.println(name.substring(2,8));
-        System.out.println(name.subSequence(2,8));
+        System.out.println(name.substring(2, 8));
+        System.out.println(name.subSequence(2, 8));
 
 
     }
