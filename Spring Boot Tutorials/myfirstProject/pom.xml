@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.edigest</groupId>
-	<artifactId>myfirstProject</artifactId>
+	<artifactId>myfirstproject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>myfirstProject</name>
-	<description>First project for Spring Boot</description>
+	<name>myfirstproject</name>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -40,9 +40,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
-
 	</dependencies>
 
 	<build>
