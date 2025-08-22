@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/journal") // First  this will be the path then -> get mapping  will be called.
+@RequestMapping("/_journal") // First  this will be the path then -> get mapping  will be called.
 public class JournalEntryController {
 
     private Map<Long,JournalEntry> journalEntries = new HashMap<>();
