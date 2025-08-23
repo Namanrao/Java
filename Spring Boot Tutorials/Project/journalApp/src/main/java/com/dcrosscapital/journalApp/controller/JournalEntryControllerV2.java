@@ -1,40 +1,55 @@
 package com.dcrosscapital.journalApp.controller;
 
 import com.dcrosscapital.journalApp.entity.JournalEntry;
+import com.dcrosscapital.journalApp.service.JournalEntryService;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
-@RestController
+@RestController // ----- yahan par RestController already laga hua hai toh @Component ki zarurat nahi hai.
+
 @RequestMapping("/journal") // First  this will be the path then -> get mapping  will be called.
+
 public class JournalEntryControllerV2 {
 
 
-    @GetMapping
-    public List<JournalEntry> getAll(){
-        return null;
-    }
+    @Autowired
+    private JournalEntryService journalEntryService;
+
 
     @PostMapping
-    public Boolean createEntry(@RequestBody JournalEntry myEntry){ // localhost:8080/journal POST
-        return true;
+    public JournalEntry createEntry(@RequestBody JournalEntry myEntry) { // localhost:8080/journal POST
+        myEntry.setDate(LocalDateTime.now());
+        journalEntryService.saveEntry(myEntry);  //----> This is what ORM is .
+        return myEntry;
     }
+
 
     @GetMapping("id/{myid}")
-    public JournalEntry getJournalEntrybyId(@PathVariable Long myid){
-        return null;
-
+    public JournalEntry getjournalEntrybyid(@PathVariable ObjectId myid) {
+        return journalEntryService.findById(myid).orElse(null);
     }
+
 
     @DeleteMapping("id/{myid}")
-    public Boolean deleteJournalEntry(@PathVariable Long myid){
+    public boolean deleteJournalEntry(@PathVariable ObjectId myid) {
+        journalEntryService.deleteById(myid);
         return true;
     }
 
+
     @PutMapping("id/{myid}")
-    public Boolean updateJournalEntry(@PathVariable Long myid,@RequestBody JournalEntry entry){
-        return true;
+    public JournalEntry updateJournalEntry(@PathVariable ObjectId myid, @RequestBody JournalEntry newEntry) {
+        JournalEntry old =  journalEntryService.findById(myid).orElse(null);
+        if(old!=null){
+            old.setTitle(newEntry.getTitle()!=null && !newEntry.getTitle().isEmpty()?newEntry.getTitle(): old.getTitle());
+            old.setContent(newEntry.getContent()!=null && !newEntry.getContent().isEmpty()?newEntry.getContent(): old.getContent());
+        }
+        journalEntryService.saveEntry(old);  //----> This is what ORM is .
+        return old;
+    }
 }
+
