@@ -4,8 +4,11 @@ import com.dcrosscapital.journalApp.entity.JournalEntry;
 import com.dcrosscapital.journalApp.service.JournalEntryService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -20,36 +23,56 @@ public class JournalEntryControllerV2 {
     private JournalEntryService journalEntryService;
 
 
+    @GetMapping
+    public ResponseEntity<?> getAllEntries(){
+        List<JournalEntry>  all = journalEntryService.getAll();
+        if(all != null){
+            return new ResponseEntity<>(all, HttpStatus.OK);
+        }
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping
-    public JournalEntry createEntry(@RequestBody JournalEntry myEntry) { // localhost:8080/journal POST
-        myEntry.setDate(LocalDateTime.now());
-        journalEntryService.saveEntry(myEntry);  //----> This is what ORM is .
-        return myEntry;
+    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry) {
+        try {
+            // localhost:8080/journal POST
+            myEntry.setDate(LocalDateTime.now());
+            journalEntryService.saveEntry(myEntry);  //----> This is what ORM is .
+            return new ResponseEntity<>(myEntry,HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
-    @GetMapping("id/{myid}")
-    public JournalEntry getjournalEntrybyid(@PathVariable ObjectId myid) {
-        return journalEntryService.findById(myid).orElse(null);
+    @GetMapping("id/{myId}")
+    public ResponseEntity<JournalEntry> getjournalEntrybyid(@PathVariable ObjectId myId) {
+        Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);
+        if(journalEntry.isPresent()){
+            return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 
     @DeleteMapping("id/{myid}")
-    public boolean deleteJournalEntry(@PathVariable ObjectId myid) {
+    public ResponseEntity<?> deleteJournalEntry(@PathVariable ObjectId myid) {
         journalEntryService.deleteById(myid);
-        return true;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT.);
     }
 
 
     @PutMapping("id/{myid}")
-    public JournalEntry updateJournalEntry(@PathVariable ObjectId myid, @RequestBody JournalEntry newEntry) {
+    public ResponseEntity<?>  updateJournalEntry(@PathVariable ObjectId myid, @RequestBody JournalEntry newEntry) {
         JournalEntry old =  journalEntryService.findById(myid).orElse(null);
         if(old!=null){
             old.setTitle(newEntry.getTitle()!=null && !newEntry.getTitle().isEmpty()?newEntry.getTitle(): old.getTitle());
             old.setContent(newEntry.getContent()!=null && !newEntry.getContent().isEmpty()?newEntry.getContent(): old.getContent());
+            journalEntryService.saveEntry(old);  //----> This is what ORM is .
+            return new  ResponseEntity<>(old, HttpStatus.OK);
         }
-        journalEntryService.saveEntry(old);  //----> This is what ORM is .
-        return old;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
 
