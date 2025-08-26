@@ -1,6 +1,7 @@
 package com.dcrosscapital.journalApp.entity;
 
 
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,48 +14,14 @@ import java.util.Date;
 //-> This means the instance of this class will be equal to the 1 document in mongoDB
 
 @Document(collection = "journal_entries") // Yeh sab kuch jaakar journal_entries se map ho jayega
+@Data //    We do not need getters and setter  to write explicitly as project Lombok will handle it at the compile time.
+
 public class JournalEntry {
 
     @Id // This indicates that the primary key in the document will be our id here/
     private ObjectId id;
-
     private String title;
-
     private String content;
-
-
     private LocalDateTime date;
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    //    -------------
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }
