@@ -36,8 +36,7 @@ public class JournalEntryControllerV2 {
     public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry) {
         try {
             // localhost:8080/journal POST
-            myEntry.setDate(LocalDateTime.now());
-            journalEntryService.saveEntry(myEntry);  //----> This is what ORM is .
+            journalEntryService.saveEntry(myEntry);w
             return new ResponseEntity<>(myEntry,HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

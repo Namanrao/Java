@@ -6,27 +6,36 @@ package com.dcrosscapital.journalApp.service;
 
 import com.dcrosscapital.journalApp.entity.JournalEntry;
 import com.dcrosscapital.journalApp.repository.JournalEntryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service //----->Yahan component use karna important hai because iska bean automatically nahi nabenga
+@Slf4j
 public class JournalEntryService {
 
     //Now here you might think that if JournalEntryRepository is an interface where is its implementation?
 //    Spring-Boot implements this interface automatically during the runtime and its object is presented to you
 
     @Autowired  //Another Example of dependency injection
+
     private JournalEntryRepository journalEntryRepository;
 
 
     //    To save the incoming entry
     public void saveEntry(JournalEntry journalEntry) {
-        journalEntryRepository.save(journalEntry);
+        try{
+            journalEntry.setDate(LocalDateTime.now());
+            journalEntryRepository.save(journalEntry);
+        }catch(Exception e){
+            log.error("Exception "+e);
+        }
 
     }
 
