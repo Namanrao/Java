@@ -1,6 +1,8 @@
 package com.moneycontrol.ExpenseTracker.Expense.Tracker.service;
 
 import com.moneycontrol.ExpenseTracker.Expense.Tracker.model.Item;
+import com.moneycontrol.ExpenseTracker.Expense.Tracker.repository.ItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,52 +14,47 @@ import java.util.Optional;
 @Service
 public class ItemService {
 
-    List<Item> ItemList = new ArrayList<>();
+    @Autowired
+    private ItemRepository itemRepository;
+
 
     //Get all the items present in the list.
     public List<Item> getAll() {
-        return ItemList;
+        return itemRepository.findAll();
     }
 
     //Add any item in the list
-    public Item addItem(Item item) {
+    public boolean addItem(Item item) {
         LocalDate current = LocalDate.now();
         item.setDate(current);
-        ItemList.add(item);
-        return item;
+        itemRepository.save(item);
+        return true;
     }
 
     //    delete an item by id
     // Traditional for-loop approach
     public boolean delete(long myid) {
-        for (int i = 0; i < ItemList.size(); i++) {
-            if (ItemList.get(i).getId() == myid) {   // ✅ use == for primitive long
-                ItemList.remove(i);
-                return true;
-            }
-        }
-        return false;
+        itemRepository.deleteById(myid);
+        return true;
     }
 
     //    get an item by id
-    public Item getbyid(long myid) {
-        for (int i = 0; i < ItemList.size(); i++) {
-            if (ItemList.get(i).getId() == myid) {
-                return ItemList.get(i);
-            }
-        }
-        return null;
+    public Optional<?> getbyid(long myid) {
+        return itemRepository.findById(myid);
     }
 
     //    update an item by id
     public Item updateById(long myid, Item newItem) {
-        for (int i = 0; i < ItemList.size(); i++) {
-            if (ItemList.get(i).getId() == myid) {
-                newItem.setId(myid);  // ensure ID is preserved
-                ItemList.set(i, newItem);
-                return newItem;
-            }
-        }
-        return null;
+        return itemRepository.findById(myid)
+                .map(existingItem -> {
+                    existingItem.setDate(LocalDate.now());  // only this line
+                    existingItem.setName(newItem.getName());
+                    existingItem.setCategory(newItem.getCategory());
+                    existingItem.setDescription(newItem.getDescription());
+                    existingItem.setPrice(newItem.getPrice());
+                    return itemRepository.save(existingItem);
+
+                })
+                .orElse(null);
     }
 }

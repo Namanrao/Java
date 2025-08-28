@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/item")
@@ -15,10 +16,9 @@ public class ItemController {
 
     @Autowired
     private ItemService itemservice;
-
-
+    
     @PostMapping
-    public Item addItem(@RequestBody Item item) {
+    public boolean addItem(@RequestBody Item item) {
         return itemservice.addItem(item);
     }
 
@@ -28,7 +28,7 @@ public class ItemController {
     }
 
     @GetMapping("/id/{myid}")
-    public Item getbyid(@PathVariable long myid) {
+    public Optional<?> getbyid(@PathVariable long myid) {
         return itemservice.getbyid(myid);
     }
 
