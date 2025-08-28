@@ -24,22 +24,27 @@ public class ItemService {
     }
 
     //Add any item in the list
-    public boolean addItem(Item item) {
+    public long addItem(Item item) {
         LocalDate current = LocalDate.now();
         item.setDate(current);
         itemRepository.save(item);
-        return true;
+        return item.getId();
     }
 
     //    delete an item by id
     // Traditional for-loop approach
     public boolean delete(long myid) {
-        itemRepository.deleteById(myid);
-        return true;
+//        check if the id exists in the database.
+        Optional<Item> item = itemRepository.findById(myid);
+        if (item.isPresent()) {
+            itemRepository.deleteById(myid);
+            return true;
+        }
+        return false;
     }
 
     //    get an item by id
-    public Optional<?> getbyid(long myid) {
+    public Optional<Item> getbyid(long myid) {
         return itemRepository.findById(myid);
     }
 
